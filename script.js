@@ -26,5 +26,18 @@ document.getElementById("longGrid").innerHTML=longForm.map((x,i)=>driveCard(x,i,
 document.getElementById("shortGrid").innerHTML=shorts.map(youtubeCard).join("");
 const player=document.getElementById("player"),frame=document.getElementById("playerFrame");
 function close(){player.classList.remove("open");player.setAttribute("aria-hidden","true");frame.src="";document.body.style.overflow="";}
-document.querySelectorAll(".project").forEach(el=>el.addEventListener("click",()=>{if(el.dataset.video==="drive"){const src=el.dataset.src;if(src)window.open(src,"_blank","noopener,noreferrer");return;}}));
-document.getElementById("playerClose").addEventListener("click",close);player.addEventListener("click",e=>{if(e.target===player)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
+document.querySelectorAll(".project").forEach(el=>el.addEventListener("click",()=>{
+  if(el.dataset.video==="drive"){
+    const src=el.dataset.src;
+    if(src) window.open(src,"_blank","noopener,noreferrer");
+    return;
+  }
+  if(el.dataset.video==="youtube"){
+    const id=el.dataset.id,start=el.dataset.start||0;
+    frame.src=`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&start=${start}`;
+    player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";
+  }
+}));
+document.getElementById("playerClose").addEventListener("click",close);
+player.addEventListener("click",e=>{if(e.target===player)close()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")close()});
