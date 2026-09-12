@@ -8,14 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
     {title:"Kinetic Typography in After Effects",src:"assets/KINETIC UPDATED.png",kind:"thumbnail",label:"YOUTUBE THUMBNAIL"}
   ];
   const motionGraphics = [
-    {title:"Motion Graphics #01",driveId:"1cF6qD-xdQvEMndSY9c7nT9p6u9ws2vsL"},
-    {title:"Motion Graphics #02",driveId:"1hMsnFtJ2SDOiTAucb8jnzfSIdOXEJq58"},
-    {title:"Motion Graphics #03",driveId:"1ZusM5Z-UB3TK-WS39f4YGAwi9twEKrDp"},
-    {title:"Motion Graphics #04",driveId:"121ePN1OiVnmgfUF-lFf9yWLPJMz06Nyg"},
-    {title:"Motion Graphics #05",driveId:"1AuCNQ0T3Zp2bF9uH4yDnje-1Cokp5cxE"},
-    {title:"Motion Graphics #06",driveId:"1iZtaCqpCns7XcTu0iBUg5FDl33Doxmb0"},
-    {title:"Motion Graphics #07",driveId:"11DmIRdJqN_dhF7pUUx3dnu7wEvZ6EL6e"},
-    {title:"Motion Graphics #08",driveId:"1Tdsn60SE_9CwifZUt1ToJqiu5LLqQAhD"}
+    {title:"Motion Graphics #01",driveId:"1cF6qD-xdQvEMndSY9c7nT9p6u9ws2vsL",thumb:"assets/MG [thumbnails]/01.png"},
+    {title:"Motion Graphics #02",driveId:"1hMsnFtJ2SDOiTAucb8jnzfSIdOXEJq58",thumb:"assets/MG [thumbnails]/02.png"},
+    {title:"Motion Graphics #03",driveId:"1ZusM5Z-UB3TK-WS39f4YGAwi9twEKrDp",thumb:"assets/MG [thumbnails]/03.png"},
+    {title:"Motion Graphics #04",driveId:"121ePN1OiVnmgfUF-lFf9yWLPJMz06Nyg",thumb:"assets/MG [thumbnails]/04.png"},
+    {title:"Motion Graphics #05",driveId:"1AuCNQ0T3Zp2bF9uH4yDnje-1Cokp5cxE",thumb:"assets/MG [thumbnails]/05.png"},
+    {title:"Motion Graphics #06",driveId:"1iZtaCqpCns7XcTu0iBUg5FDl33Doxmb0",thumb:"assets/MG [thumbnails]/06.png"},
+    {title:"Motion Graphics #07",driveId:"11DmIRdJqN_dhF7pUUx3dnu7wEvZ6EL6e",thumb:"assets/MG [thumbnails]/07.png"},
+    {title:"Motion Graphics #08",driveId:"1Tdsn60SE_9CwifZUt1ToJqiu5LLqQAhD",thumb:"assets/MG [thumbnails]/08.png"}
   ];
   const longForm = [
     {title:"Long Form #01",driveId:"1VP1E0dTArBwiyP7S0YA7v85yW7Sb767n"},{title:"Long Form #02",driveId:""},{title:"Long Form #03",driveId:""}
@@ -39,8 +39,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   function driveCard(item,index,kind){
     const n=String(index+1).padStart(2,"0"),src=item.driveId?drivePreview(item.driveId):"",tag=kind==="motion"?"MOTION GRAPHICS":"LONG FORM";
+    const poster=item.thumb||"";
     return `<article class="project drive-project" data-video="drive" data-src="${src}">
-      <div class="project-media drive-media">${src?`<iframe src="${src}" title="${item.title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`:`<div class="drive-placeholder"><span>DRIVE VIDEO PENDING</span></div>`}<span class="num">${n}</span><span class="play">▶</span><span class="tag">${tag}</span><span class="hover-hint">HOVER</span></div>
+      <div class="project-media drive-media">${poster?`<img src="${poster}" alt="${item.title}" loading="lazy">`:src?`<iframe src="${src}" title="${item.title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`:`<div class="drive-placeholder"><span>DRIVE VIDEO PENDING</span></div>`}<span class="num">${n}</span><span class="play">▶</span><span class="tag">${tag}</span><span class="hover-hint">HOVER</span></div>
       <div class="project-meta"><h3>${item.title}</h3><p>${src?"GOOGLE DRIVE → PREVIEW":"ADD DRIVE FILE ID"}</p></div>
     </article>`;
   }
