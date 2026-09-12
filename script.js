@@ -1,7 +1,7 @@
 const graphicDesign = [
-  {title:"India's Most Brutal Serial Killer", src:"assets/01_MAIN_FINAL (1).png", kind:"poster", label:"POSTER DESIGN"},
+  {title:"India's Most Brutal Serial Killer", src:"assets/01_MAIN_FINAL (1).png", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"},
   {title:"A’ja Wilson — WNBA Champion", src:"assets/01-FINAL-WILSON (1).jpg", kind:"poster", label:"POSTER DESIGN"},
-  {title:"Virat Kohli — 100 v/s Pakistan", src:"assets/02-KOHLI GRAINED (1).jpg", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"},
+  {title:"Virat Kohli — 100 v/s Pakistan", src:"assets/02-KOHLI GRAINED (1).jpg", kind:"poster", label:"POSTER DESIGN"},
   {title:"Hypocrite — Samay Raina / Ashneer", src:"assets/ART 3 (1).png", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"}
 ];
 const motionGraphics = [
@@ -17,9 +17,9 @@ const shorts = [
 ];
 function thumb(id){return `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;}
 function drivePreview(id){return `https://drive.google.com/file/d/${id}/preview`;}
-function graphicCard(item,index){const n=String(index+1).padStart(2,"0");return `<article class="project graphic-project graphic-${item.kind}"><div class="project-media"><img src="${item.src}" alt="${item.title}" loading="lazy"><span class="num">${n}</span><span class="tag">${item.label}</span></div><div class="project-meta"><h3>${item.title}</h3><p>${item.kind==="poster"?"POSTER → VIEW":"YOUTUBE → THUMBNAIL"}</p></div></article>`;}
+function graphicCard(item,index){const n=String(index+1).padStart(2,"0");return `<article class="project graphic-project graphic-${item.kind}"><div class="project-media"><img src="${item.src}" alt="${item.title}" loading="lazy"><span class="num">${n}</span><span class="tag">${item.label}</span></div><div class="project-meta"><h3>${item.title}</h3><p>${item.kind==="poster"?"POSTER DESIGN → VIEW":"YOUTUBE THUMBNAIL → VIEW"}</p></div></article>`;}
 function driveCard(item,index,kind){const n=String(index+1).padStart(2,"0"),src=item.driveId?drivePreview(item.driveId):"",tag=kind==="motion"?"MOTION GRAPHICS":"LONG FORM";return `<article class="project drive-project" data-video="drive" data-src="${src}"><div class="project-media drive-media">${src?`<iframe src="${src}" title="${item.title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`:`<div class="drive-placeholder"><span>DRIVE VIDEO PENDING</span></div>`}<span class="num">${n}</span><span class="play">▶</span><span class="tag">${tag}</span></div><div class="project-meta"><h3>${item.title}</h3><p>${src?"GOOGLE DRIVE → OPEN":"ADD DRIVE FILE ID"}</p></div></article>`;}
-function youtubeCard(item,index){const n=String(index+1).padStart(2,"0");return `<article class="project" data-video="youtube" data-id="${item.id}" data-start="${item.start}"><div class="project-media"><img src="${thumb(item.id)}" alt="${item.title}" loading="lazy" onerror="this.src='https://i.ytimg.com/vi/${item.id}/hqdefault.jpg'"><span class="num">${n}</span><span class="play">▶</span><span class="tag">${item.type}</span><span class="time">${item.label} → END</span></div><div class="project-meta"><h3>${item.title}</h3><p>${item.label} → END</p></div></article>`;}
+function youtubeCard(item,index){const n=String(index+1).padStart(2,"0");return `<article class="project" data-video="youtube" data-id="${item.id}" data-start="${item.start}"><div class="project-media"><img src="${thumb(item.id)}" alt="${item.title}" loading="lazy" onerror="this.src='https://i.ytimg.com/vi/${item.id}/hqdefault.jpg'"><span class="num">${n}</span><span class="play">▶</span><span class="tag">${item.type}</span><span class="time">${item.label} → END</span></div><div class="project-meta"><h3>${item.title}</h3><p>${item.label} · ${item.label} → END</p></div></article>`;}
 document.getElementById("graphicGrid").innerHTML=graphicDesign.map(graphicCard).join("");
 document.getElementById("motionGrid").innerHTML=motionGraphics.map((x,i)=>driveCard(x,i,"motion")).join("");
 document.getElementById("longGrid").innerHTML=longForm.map((x,i)=>driveCard(x,i,"long")).join("");
