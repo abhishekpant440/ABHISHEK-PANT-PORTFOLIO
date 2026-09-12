@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function graphicCard(item,index){
     const n=String(index+1).padStart(2,"0");
-    return `<article class="project graphic-project graphic-${item.kind}" data-video="graphic" data-src="${item.src}">
+    return `<article class="project graphic-project graphic-${item.kind}" data-video="graphic" data-src="${item.src}" data-kind="${item.kind}">
       <div class="project-media"><img src="${item.src}" alt="${item.title}" loading="lazy"><span class="num">${n}</span><span class="tag">${item.label}</span><span class="hover-hint">VIEW</span></div>
       <div class="project-meta"><h3>${item.title}</h3><p>${item.label} → VIEW</p></div>
     </article>`;
@@ -52,11 +52,53 @@ document.addEventListener("DOMContentLoaded", () => {
   if(shortGrid) shortGrid.innerHTML=shorts.map(youtubeCard).join("");
 
   const player=$("player"),frame=$("playerFrame"),playerImage=$("playerImage");
-  function closePlayer(){if(!player)return;player.classList.remove("open");player.setAttribute("aria-hidden","true");if(frame)frame.src="";if(playerImage){playerImage.removeAttribute("src");playerImage.style.display="none";}if(frame)frame.style.display="block";document.body.style.overflow="";}
-  function openImage(src){if(!player||!playerImage)return;frame.src="";frame.style.display="none";playerImage.src=src;playerImage.style.display="block";player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
-  function openVideo(src){if(!player||!frame)return;playerImage.removeAttribute("src");playerImage.style.display="none";frame.style.display="block";frame.src=src;player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
+  function closePlayer(){
+    if(!player)return;
+    player.classList.remove("open","image-mode");
+    player.setAttribute("aria-hidden","true");
+    if(frame){frame.src="";frame.style.width="";frame.style.height="";frame.style.aspectRatio="";frame.style.maxWidth="";frame.style.maxHeight="";}
+    if(playerImage){playerImage.removeAttribute("src");playerImage.style.display="none";playerImage.style.width="";playerImage.style.height="";playerImage.style.maxWidth="";playerImage.style.maxHeight="";}
+    if(frame)frame.style.display="grid";
+    document.body.style.overflow="";
+  }
+  function openImage(src){
+    if(!player||!playerImage)return;
+    frame.src="";
+    frame.style.display="grid";
+    frame.style.width="auto";
+    frame.style.height="auto";
+    frame.style.aspectRatio="auto";
+    frame.style.maxWidth="90vw";
+    frame.style.maxHeight="90vh";
+    frame.style.background="#000";
+    playerImage.src=src;
+    playerImage.style.display="block";
+    playerImage.style.width="auto";
+    playerImage.style.height="auto";
+    playerImage.style.maxWidth="90vw";
+    playerImage.style.maxHeight="90vh";
+    playerImage.style.objectFit="contain";
+    player.classList.add("open","image-mode");
+    player.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  }
+  function openVideo(src){
+    if(!player||!frame)return;
+    player.classList.remove("image-mode");
+    playerImage.removeAttribute("src");
+    playerImage.style.display="none";
+    frame.style.display="block";
+    frame.style.width="min(1200px,92vw)";
+    frame.style.height="auto";
+    frame.style.aspectRatio="16/9";
+    frame.style.maxWidth="";
+    frame.style.maxHeight="";
+    frame.src=src;
+    player.classList.add("open");
+    player.setAttribute("aria-hidden","false");
+    document.body.style.overflow="hidden";
+  }
 
-  /* Restored: compact bottom-right live preview, like the original version. */
   const hoverPreview=document.createElement("div");
   hoverPreview.className="hover-preview";
   hoverPreview.innerHTML='<div class="hover-preview-media"></div><div class="hover-preview-label">LIVE PREVIEW · MOVE AWAY TO CLOSE</div>';
@@ -66,7 +108,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function hideHover(){
     activeHover=null;
-    hoverPreview.classList.remove("show");
+    hoverPreview.classList.remove("show","poster-preview");
     hoverMedia.innerHTML="";
   }
 
@@ -74,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if(activeHover===el)return;
     hideHover();
     activeHover=el;
+    const isPoster=el.dataset.video==="graphic" && el.dataset.kind==="poster";
     if(el.dataset.video==="graphic"){
       const img=document.createElement("img");
       img.src=el.dataset.src;
@@ -95,10 +138,10 @@ document.addEventListener("DOMContentLoaded", () => {
       activeHover=null;
       return;
     }
+    if(isPoster)hoverPreview.classList.add("poster-preview");
     requestAnimationFrame(()=>hoverPreview.classList.add("show"));
   }
 
-  /* Custom circular cursor on portfolio work. */
   const cursor=document.createElement("div");
   cursor.className="custom-cursor";
   document.body.appendChild(cursor);
