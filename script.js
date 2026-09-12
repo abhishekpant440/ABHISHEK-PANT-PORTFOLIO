@@ -19,8 +19,8 @@ const shorts = [
 ];
 function thumb(id){return `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;}
 function drivePreview(id){return `https://drive.google.com/file/d/${id}/preview`;}
-function graphicCard(item,index){const n=String(index+1).padStart(2,"0");return `<article class="project graphic-project graphic-${item.kind}" data-video="graphic" data-src="${item.src}"><div class="project-media"><img src="${item.src}" alt="${item.title}" loading="lazy"><span class="num">${n}</span><span class="tag">${item.label}</span><span class="hover-hint">HOVER TO PREVIEW</span></div><div class="project-meta"><h3>${item.title}</h3><p>${item.kind==="poster"?"POSTER DESIGN → HOVER":"YOUTUBE THUMBNAIL → HOVER"}</p></div></article>`;}
-function driveCard(item,index,kind){const n=String(index+1).padStart(2,"0"),src=item.driveId?drivePreview(item.driveId):"",tag=kind==="motion"?"MOTION GRAPHICS":"LONG FORM";return `<article class="project drive-project" data-video="drive" data-src="${src}"><div class="project-media drive-media">${src?`<iframe src="${src}" title="${item.title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`:`<div class="drive-placeholder"><span>DRIVE VIDEO PENDING</span></div>`}<span class="num">${n}</span><span class="play">▶</span><span class="tag">${tag}</span><span class="hover-hint">HOVER TO PREVIEW</span></div><div class="project-meta"><h3>${item.title}</h3><p>${src?"GOOGLE DRIVE → HOVER":"ADD DRIVE FILE ID"}</p></div></article>`;}
+function graphicCard(item,index){const n=String(index+1).padStart(2,"0");return `<article class="project graphic-project graphic-${item.kind}" data-video="graphic" data-src="${item.src}"><div class="project-media"><img src="${item.src}" alt="${item.title}" loading="lazy"><span class="num">${n}</span><span class="tag">${item.label}</span><span class="hover-hint">HOVER TO PREVIEW</span></div><div class="project-meta"><h3>${item.title}</h3><p>${item.kind==="poster"?"POSTER DESIGN → PREVIEW":"YOUTUBE THUMBNAIL → PREVIEW"}</p></div></article>`;}
+function driveCard(item,index,kind){const n=String(index+1).padStart(2,"0"),src=item.driveId?drivePreview(item.driveId):"",tag=kind==="motion"?"MOTION GRAPHICS":"LONG FORM";return `<article class="project drive-project" data-video="drive" data-src="${src}"><div class="project-media drive-media">${src?`<iframe src="${src}" title="${item.title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`:`<div class="drive-placeholder"><span>DRIVE VIDEO PENDING</span></div>`}<span class="num">${n}</span><span class="play">▶</span><span class="tag">${tag}</span><span class="hover-hint">HOVER TO PREVIEW</span></div><div class="project-meta"><h3>${item.title}</h3><p>${src?"GOOGLE DRIVE → PREVIEW":"ADD DRIVE FILE ID"}</p></div></article>`;}
 function youtubeCard(item,index){const n=String(index+1).padStart(2,"0");return `<article class="project" data-video="youtube" data-id="${item.id}" data-start="${item.start}"><div class="project-media"><img src="${thumb(item.id)}" alt="${item.title}" loading="lazy" onerror="this.src='https://i.ytimg.com/vi/${item.id}/hqdefault.jpg'"><span class="num">${n}</span><span class="play">▶</span><span class="tag">${item.type}</span><span class="time">${item.label} → END</span><span class="hover-hint">HOVER TO PREVIEW</span></div><div class="project-meta"><h3>${item.title}</h3><p>${item.label} · ${item.label} → END</p></div></article>`;}
 document.getElementById("graphicGrid").innerHTML=graphicDesign.map(graphicCard).join("");
 document.getElementById("motionGrid").innerHTML=motionGraphics.map((x,i)=>driveCard(x,i,"motion")).join("");
@@ -28,20 +28,90 @@ document.getElementById("longGrid").innerHTML=longForm.map((x,i)=>driveCard(x,i,
 document.getElementById("shortGrid").innerHTML=shorts.map(youtubeCard).join("");
 
 const player=document.getElementById("player"),frame=document.getElementById("playerFrame"),playerImage=document.getElementById("playerImage");
-function close(){player.classList.remove("open");player.setAttribute("aria-hidden","true");frame.src="";if(playerImage){playerImage.removeAttribute("src");playerImage.style.display="none";}frame.style.display="block";document.body.style.overflow="";}
-function openImage(src){frame.src="";frame.style.display="none";if(playerImage){playerImage.src=src;playerImage.style.display="block";}player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
-function openVideo(src){if(playerImage){playerImage.removeAttribute("src");playerImage.style.display="none";}frame.style.display="block";frame.src=src;player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
+function close(){player.classList.remove("open");player.setAttribute("aria-hidden","true");frame.src="";playerImage.removeAttribute("src");playerImage.style.display="none";frame.style.display="block";document.body.style.overflow="";}
+function openImage(src){frame.src="";frame.style.display="none";playerImage.src=src;playerImage.style.display="block";player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
+function openVideo(src){playerImage.removeAttribute("src");playerImage.style.display="none";frame.style.display="block";frame.src=src;player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
 
+/* Hover previews: anchored to the hovered card, never fixed to a screen corner. */
 const hoverPreview=document.createElement("div");
 hoverPreview.className="hover-preview";
-hoverPreview.innerHTML=`<button class="hover-preview-close" aria-label="Close preview">×</button><div class="hover-preview-media"></div><div class="hover-preview-label">LIVE PREVIEW · MOVE AWAY TO CLOSE</div>`;
+hoverPreview.innerHTML=`<div class="hover-preview-media"></div><div class="hover-preview-label">LIVE PREVIEW</div>`;
+hoverPreview.style.pointerEvents="none";
 document.body.appendChild(hoverPreview);
-const hoverMedia=hoverPreview.querySelector(".hover-preview-media"),hoverClose=hoverPreview.querySelector(".hover-preview-close");
-let hoverTimer;
-function hideHover(){clearTimeout(hoverTimer);hoverPreview.classList.remove("show");hoverMedia.innerHTML="";}
-function placeHover(el){const r=el.getBoundingClientRect();const w=Math.min(380,window.innerWidth*0.30);const h=w*0.625;let left=r.right+18;if(left+w>window.innerWidth-18)left=r.left-w-18;if(left<18)left=Math.max(18,(window.innerWidth-w)/2);let top=r.top;if(top+h>window.innerHeight-18)top=window.innerHeight-h-18;if(top<18)top=18;hoverPreview.style.width=`${w}px`;hoverPreview.style.left=`${left}px`;hoverPreview.style.top=`${top}px`;hoverPreview.style.right="auto";hoverPreview.style.bottom="auto";}
-function showHover(el){clearTimeout(hoverTimer);const media=el.querySelector(".project-media");if(!media)return;hoverMedia.innerHTML="";if(el.dataset.video==="graphic"){const img=document.createElement("img");img.src=el.dataset.src;img.alt="Preview";hoverMedia.appendChild(img);}else if(el.dataset.video==="drive"&&el.dataset.src){const f=document.createElement("iframe");f.src=el.dataset.src;f.allow="autoplay; fullscreen; picture-in-picture";f.allowFullscreen=true;hoverMedia.appendChild(f);}else if(el.dataset.video==="youtube"){const f=document.createElement("iframe");f.src=`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&mute=1&controls=1&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`;f.allow="autoplay; fullscreen; picture-in-picture";f.allowFullscreen=true;hoverMedia.appendChild(f);}else{return;}placeHover(el);hoverPreview.classList.add("show");}
-document.querySelectorAll(".project").forEach(el=>{el.addEventListener("mouseenter",()=>showHover(el));el.addEventListener("mouseleave",()=>{hoverTimer=setTimeout(hideHover,220)});el.addEventListener("click",()=>{if(el.dataset.video==="graphic")return;if(el.dataset.video==="drive"){if(el.dataset.src)openVideo(el.dataset.src);return;}if(el.dataset.video==="youtube"){const id=el.dataset.id,start=el.dataset.start||0;openVideo(`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&start=${start}`);}});});
-hoverPreview.addEventListener("mouseenter",()=>clearTimeout(hoverTimer));hoverPreview.addEventListener("mouseleave",()=>{hoverTimer=setTimeout(hideHover,120)});hoverClose.addEventListener("click",hideHover);
-window.addEventListener("scroll",hideHover,{passive:true});window.addEventListener("resize",hideHover);
-document.getElementById("playerClose").addEventListener("click",close);player.addEventListener("click",e=>{if(e.target===player)close()});document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideHover();close()}});
+const hoverMedia=hoverPreview.querySelector(".hover-preview-media");
+let activeHover=null;
+
+function hideHover(){
+  activeHover=null;
+  hoverPreview.classList.remove("show");
+  hoverMedia.innerHTML=""; // removing the iframe immediately stops video playback
+}
+
+function positionHover(el){
+  const rect=el.getBoundingClientRect();
+  const gap=18;
+  const width=Math.min(390,Math.max(300,window.innerWidth*0.30));
+  const height=width*0.625;
+  let left=rect.right+gap;
+  if(left+width>window.innerWidth-18) left=rect.left-width-gap;
+  if(left<18) left=Math.max(18,(window.innerWidth-width)/2);
+  let top=rect.top+(rect.height-height)/2;
+  top=Math.max(18,Math.min(top,window.innerHeight-height-18));
+  hoverPreview.style.width=`${width}px`;
+  hoverPreview.style.height=`${height}px`;
+  hoverPreview.style.left=`${left}px`;
+  hoverPreview.style.right="auto";
+  hoverPreview.style.top=`${top}px`;
+  hoverPreview.style.bottom="auto";
+}
+
+function showHover(el){
+  if(activeHover===el)return;
+  hideHover();
+  activeHover=el;
+  const rect=el.getBoundingClientRect();
+  if(rect.bottom<0||rect.top>window.innerHeight)return;
+  const media=el.querySelector(".project-media");
+  if(!media)return;
+  hoverMedia.innerHTML="";
+  if(el.dataset.video==="graphic"){
+    const img=document.createElement("img");
+    img.src=el.dataset.src;
+    img.alt="Design preview";
+    hoverMedia.appendChild(img);
+  }else if(el.dataset.video==="drive"&&el.dataset.src){
+    const f=document.createElement("iframe");
+    f.src=el.dataset.src;
+    f.allow="autoplay; fullscreen; picture-in-picture";
+    f.allowFullscreen=true;
+    hoverMedia.appendChild(f);
+  }else if(el.dataset.video==="youtube"){
+    const f=document.createElement("iframe");
+    f.src=`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`;
+    f.allow="autoplay; fullscreen; picture-in-picture";
+    f.allowFullscreen=true;
+    hoverMedia.appendChild(f);
+  }else{return;}
+  positionHover(el);
+  hoverPreview.classList.add("show");
+}
+
+document.querySelectorAll(".project").forEach(el=>{
+  el.addEventListener("mouseenter",()=>showHover(el));
+  el.addEventListener("mouseleave",hideHover);
+  el.addEventListener("click",()=>{
+    hideHover();
+    if(el.dataset.video==="graphic"){return;}
+    if(el.dataset.video==="drive"){if(el.dataset.src)openVideo(el.dataset.src);return;}
+    if(el.dataset.video==="youtube"){
+      const id=el.dataset.id,start=el.dataset.start||0;
+      openVideo(`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&start=${start}`);
+    }
+  });
+});
+
+window.addEventListener("resize",()=>{if(activeHover)positionHover(activeHover);});
+window.addEventListener("scroll",hideHover,{passive:true});
+document.getElementById("playerClose").addEventListener("click",close);
+player.addEventListener("click",e=>{if(e.target===player)close()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideHover();close()}});
