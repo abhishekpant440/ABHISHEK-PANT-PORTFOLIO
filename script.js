@@ -2,7 +2,9 @@ const graphicDesign = [
   {title:"India's Most Brutal Serial Killer", src:"assets/01_MAIN_FINAL (1).png", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"},
   {title:"A’ja Wilson — WNBA Champion", src:"assets/01-FINAL-WILSON (1).jpg", kind:"poster", label:"POSTER DESIGN"},
   {title:"Virat Kohli — 100 v/s Pakistan", src:"assets/02-KOHLI GRAINED (1).jpg", kind:"poster", label:"POSTER DESIGN"},
-  {title:"Hypocrite — Samay Raina / Ashneer", src:"assets/ART 3 (1).png", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"}
+  {title:"Hypocrite — Samay Raina / Ashneer", src:"assets/ART 3 (1).png", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"},
+  {title:"5 Free After Effects Plugins", src:"assets/AE_PLUGINS_THUMBNAILS.png", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"},
+  {title:"Kinetic Typography in After Effects", src:"assets/KINETIC UPDATED.png", kind:"thumbnail", label:"YOUTUBE THUMBNAIL"}
 ];
 const motionGraphics = [
   {title:"Motion Graphics #01", driveId:""},{title:"Motion Graphics #02", driveId:""},{title:"Motion Graphics #03", driveId:""},{title:"Motion Graphics #04", driveId:""},{title:"Motion Graphics #05", driveId:""},{title:"Motion Graphics #06", driveId:""},{title:"Motion Graphics #07", driveId:""}
