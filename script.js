@@ -53,52 +53,78 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const player=$("player"),frame=$("playerFrame"),playerImage=$("playerImage");
   function closePlayer(){if(!player)return;player.classList.remove("open");player.setAttribute("aria-hidden","true");if(frame)frame.src="";if(playerImage){playerImage.removeAttribute("src");playerImage.style.display="none";}if(frame)frame.style.display="block";document.body.style.overflow="";}
-  function openVideo(src){if(!player||!frame)return;playerImage.style.display="none";frame.style.display="block";frame.src=src;player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
+  function openImage(src){if(!player||!playerImage)return;frame.src="";frame.style.display="none";playerImage.src=src;playerImage.style.display="block";player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
+  function openVideo(src){if(!player||!frame)return;playerImage.removeAttribute("src");playerImage.style.display="none";frame.style.display="block";frame.src=src;player.classList.add("open");player.setAttribute("aria-hidden","false");document.body.style.overflow="hidden";}
 
+  /* Restored: compact bottom-right live preview, like the original version. */
   const hoverPreview=document.createElement("div");
   hoverPreview.className="hover-preview";
-  hoverPreview.innerHTML='<div class="hover-preview-media"></div><div class="hover-preview-label">PREVIEW</div>';
+  hoverPreview.innerHTML='<div class="hover-preview-media"></div><div class="hover-preview-label">LIVE PREVIEW · MOVE AWAY TO CLOSE</div>';
   document.body.appendChild(hoverPreview);
   const hoverMedia=hoverPreview.querySelector(".hover-preview-media");
   let activeHover=null;
 
-  function hideHover(){activeHover=null;hoverPreview.classList.remove("show");hoverMedia.innerHTML="";}
-  function positionHover(el){
-    const r=el.getBoundingClientRect(),gap=16,w=Math.min(400,Math.max(300,window.innerWidth*.30));
-    const isPoster=el.classList.contains("graphic-poster"),h=isPoster?w*1.5:w*.5625;
-    let left=r.right+gap;
-    if(left+w>window.innerWidth-18)left=r.left-w-gap;
-    if(left<18)left=Math.max(18,(window.innerWidth-w)/2);
-    let top=r.top+(r.height-h)/2;
-    top=Math.max(18,Math.min(top,window.innerHeight-h-18));
-    hoverPreview.style.width=w+"px";hoverPreview.style.height=h+"px";hoverPreview.style.left=left+"px";hoverPreview.style.top=top+"px";hoverPreview.style.right="auto";hoverPreview.style.bottom="auto";
-  }
-  function showHover(el){
-    if(activeHover===el)return;
-    hideHover();activeHover=el;
-    const r=el.getBoundingClientRect();if(r.bottom<0||r.top>window.innerHeight)return;
-    if(el.dataset.video==="graphic"){
-      const img=document.createElement("img");img.src=el.dataset.src;img.alt="Design preview";hoverMedia.appendChild(img);
-    }else if(el.dataset.video==="youtube"){
-      const f=document.createElement("iframe");f.src=`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`;f.allow="autoplay; fullscreen; picture-in-picture";f.allowFullscreen=true;hoverMedia.appendChild(f);
-    }else if(el.dataset.video==="drive"&&el.dataset.src){
-      const f=document.createElement("iframe");f.src=el.dataset.src+"?autoplay=1";f.allow="autoplay; fullscreen; picture-in-picture";f.allowFullscreen=true;hoverMedia.appendChild(f);
-    }else return;
-    positionHover(el);requestAnimationFrame(()=>hoverPreview.classList.add("show"));
+  function hideHover(){
+    activeHover=null;
+    hoverPreview.classList.remove("show");
+    hoverMedia.innerHTML="";
   }
 
+  function showHover(el){
+    if(activeHover===el)return;
+    hideHover();
+    activeHover=el;
+    if(el.dataset.video==="graphic"){
+      const img=document.createElement("img");
+      img.src=el.dataset.src;
+      img.alt="Design preview";
+      hoverMedia.appendChild(img);
+    }else if(el.dataset.video==="youtube"){
+      const f=document.createElement("iframe");
+      f.src=`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`;
+      f.allow="autoplay; fullscreen; picture-in-picture";
+      f.allowFullscreen=true;
+      hoverMedia.appendChild(f);
+    }else if(el.dataset.video==="drive"&&el.dataset.src){
+      const f=document.createElement("iframe");
+      f.src=el.dataset.src+"?autoplay=1";
+      f.allow="autoplay; fullscreen; picture-in-picture";
+      f.allowFullscreen=true;
+      hoverMedia.appendChild(f);
+    }else{
+      activeHover=null;
+      return;
+    }
+    requestAnimationFrame(()=>hoverPreview.classList.add("show"));
+  }
+
+  /* Custom circular cursor on portfolio work. */
+  const cursor=document.createElement("div");
+  cursor.className="custom-cursor";
+  document.body.appendChild(cursor);
+  window.addEventListener("mousemove",e=>{
+    cursor.style.left=e.clientX+"px";
+    cursor.style.top=e.clientY+"px";
+  });
+
   document.querySelectorAll(".project").forEach(el=>{
-    el.addEventListener("mouseenter",()=>showHover(el));
-    el.addEventListener("mouseleave",hideHover);
+    el.addEventListener("mouseenter",()=>{showHover(el);cursor.classList.add("active");});
+    el.addEventListener("mouseleave",()=>{hideHover();cursor.classList.remove("active");});
     el.addEventListener("click",()=>{
-      if(el.dataset.video==="graphic"){hideHover();return;}
       hideHover();
-      if(el.dataset.video==="drive"&&el.dataset.src)openVideo(el.dataset.src);
-      if(el.dataset.video==="youtube")openVideo(`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`);
+      if(el.dataset.video==="graphic"){
+        openImage(el.dataset.src);
+        return;
+      }
+      if(el.dataset.video==="drive"&&el.dataset.src){openVideo(el.dataset.src);return;}
+      if(el.dataset.video==="youtube"){
+        openVideo(`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`);
+      }
     });
   });
-  window.addEventListener("resize",()=>{if(activeHover)positionHover(activeHover);});
+
   window.addEventListener("scroll",hideHover,{passive:true});
+  window.addEventListener("resize",hideHover);
   $("playerClose")?.addEventListener("click",closePlayer);
   player?.addEventListener("click",e=>{if(e.target===player)closePlayer()});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideHover();closePlayer()}});
