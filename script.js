@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if(!player)return;
     player.classList.remove("open","image-mode");
     player.setAttribute("aria-hidden","true");
-    if(frame){frame.src="";frame.style.width="";frame.style.height="";frame.style.aspectRatio="";frame.style.maxWidth="";frame.style.maxHeight="";}
+    if(frame){frame.src="";frame.style.width="";frame.style.height="";frame.style.aspectRatio="";frame.style.maxWidth="";frame.style.maxHeight="";frame.style.overflow="";}
     if(playerImage){playerImage.removeAttribute("src");playerImage.style.display="none";playerImage.style.width="";playerImage.style.height="";playerImage.style.maxWidth="";playerImage.style.maxHeight="";}
     if(frame)frame.style.display="grid";
     document.body.style.overflow="";
@@ -65,19 +65,27 @@ document.addEventListener("DOMContentLoaded", () => {
     if(!player||!playerImage)return;
     frame.src="";
     frame.style.display="grid";
-    frame.style.width="auto";
-    frame.style.height="auto";
+    frame.style.width="fit-content";
+    frame.style.height="fit-content";
     frame.style.aspectRatio="auto";
-    frame.style.maxWidth="90vw";
-    frame.style.maxHeight="90vh";
-    frame.style.background="#000";
+    frame.style.maxWidth="calc(100vw - 80px)";
+    frame.style.maxHeight="calc(100vh - 80px)";
+    frame.style.overflow="visible";
+    frame.style.background="transparent";
+    frame.style.boxShadow="none";
     playerImage.src=src;
     playerImage.style.display="block";
     playerImage.style.width="auto";
     playerImage.style.height="auto";
-    playerImage.style.maxWidth="90vw";
-    playerImage.style.maxHeight="90vh";
+    playerImage.style.maxWidth="calc(100vw - 80px)";
+    playerImage.style.maxHeight="calc(100vh - 80px)";
     playerImage.style.objectFit="contain";
+    playerImage.onload=()=>{
+      const maxW=window.innerWidth-80,maxH=window.innerHeight-80;
+      const scale=Math.min(maxW/playerImage.naturalWidth,maxH/playerImage.naturalHeight,1);
+      frame.style.width=Math.round(playerImage.naturalWidth*scale)+"px";
+      frame.style.height=Math.round(playerImage.naturalHeight*scale)+"px";
+    };
     player.classList.add("open","image-mode");
     player.setAttribute("aria-hidden","false");
     document.body.style.overflow="hidden";
@@ -93,6 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
     frame.style.aspectRatio="16/9";
     frame.style.maxWidth="";
     frame.style.maxHeight="";
+    frame.style.overflow="hidden";
+    frame.style.boxShadow="0 0 80px rgba(0,0,0,.8)";
     frame.src=src;
     player.classList.add("open");
     player.setAttribute("aria-hidden","false");
@@ -167,7 +177,15 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener("scroll",hideHover,{passive:true});
-  window.addEventListener("resize",hideHover);
+  window.addEventListener("resize",()=>{
+    hideHover();
+    if(player?.classList.contains("image-mode")&&playerImage?.naturalWidth){
+      const maxW=window.innerWidth-80,maxH=window.innerHeight-80;
+      const scale=Math.min(maxW/playerImage.naturalWidth,maxH/playerImage.naturalHeight,1);
+      frame.style.width=Math.round(playerImage.naturalWidth*scale)+"px";
+      frame.style.height=Math.round(playerImage.naturalHeight*scale)+"px";
+    }
+  });
   $("playerClose")?.addEventListener("click",closePlayer);
   player?.addEventListener("click",e=>{if(e.target===player)closePlayer()});
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideHover();closePlayer()}});
