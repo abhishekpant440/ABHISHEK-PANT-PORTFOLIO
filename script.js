@@ -8,7 +8,14 @@ document.addEventListener("DOMContentLoaded", () => {
     {title:"Kinetic Typography in After Effects",src:"assets/KINETIC UPDATED.png",kind:"thumbnail",label:"YOUTUBE THUMBNAIL"}
   ];
   const motionGraphics = [
-    {title:"Motion Graphics #01",driveId:""},{title:"Motion Graphics #02",driveId:""},{title:"Motion Graphics #03",driveId:""},{title:"Motion Graphics #04",driveId:""},{title:"Motion Graphics #05",driveId:""},{title:"Motion Graphics #06",driveId:""},{title:"Motion Graphics #07",driveId:""}
+    {title:"Motion Graphics #01",driveId:"1cF6qD-xdQvEMndSY9c7nT9p6u9ws2vsL"},
+    {title:"Motion Graphics #02",driveId:"1hMsnFtJ2SDOiTAucb8jnzfSIdOXEJq58"},
+    {title:"Motion Graphics #03",driveId:"1ZusM5Z-UB3TK-WS39f4YGAwi9twEKrDp"},
+    {title:"Motion Graphics #04",driveId:"121ePN1OiVnmgfUF-lFf9yWLPJMz06Nyg"},
+    {title:"Motion Graphics #05",driveId:"1AuCNQ0T3Zp2bF9uH4yDnje-1Cokp5cxE"},
+    {title:"Motion Graphics #06",driveId:"1iZtaCqpCns7XcTu0iBUg5FDl33Doxmb0"},
+    {title:"Motion Graphics #07",driveId:"11DmIRdJqN_dhF7pUUx3dnu7wEvZ6EL6e"},
+    {title:"Motion Graphics #08",driveId:"1Tdsn60SE_9CwifZUt1ToJqiu5LLqQAhD"}
   ];
   const longForm = [
     {title:"Long Form #01",driveId:"1VP1E0dTArBwiyP7S0YA7v85yW7Sb767n"},{title:"Long Form #02",driveId:""},{title:"Long Form #03",driveId:""}
