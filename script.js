@@ -23,9 +23,11 @@ document.addEventListener("DOMContentLoaded", () => {
     {title:"Long Form #03",driveId:"1SZbig0U1U07XumbC6H_jOProff0ht7Ea",youtube:"https://youtu.be/pBv2bnPbAkQ?si=GHyYgizzUpU7wdk6",thumb:"assets/LF [Thumbnails]/03.jpg"}
   ];
   const shorts = [
-    {id:"dnPFNAPbNgY",title:"Short #01",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
-    {id:"guhZBWsRHyE",title:"Short #02",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
-    {id:"CM8xiNGodX4",title:"Short #03",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"}
+    {id:"thgm6CuEBVw",title:"Short #01",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
+    {id:"QxibdIAmiD4",title:"Short #02",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
+    {id:"CM8xiNGodX4",title:"Short #03",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
+    {id:"dnPFNAPbNgY",title:"Short #04",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
+    {id:"guhZBWsRHyE",title:"Short #05",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"}
   ];
 
   const $ = id => document.getElementById(id);
