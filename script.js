@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     {title:"Motion Graphics #08",driveId:"1Tdsn60SE_9CwifZUt1ToJqiu5LLqQAhD",thumb:"assets/MG [thumbnails]/08.png"}
   ];
   const longForm = [
-    {title:"Long Form #01",driveId:"1VP1E0dTArBwiyP7S0YA7v85yW7Sb767n",thumb:"assets/LF [Thumbnails]/01.jpg"},
-    {title:"Long Form #02",driveId:"1N_GTjkY6gOEfk_g0flKhtdUQ03EU6Z4D",thumb:"assets/LF [Thumbnails]/02.jpg"},
-    {title:"Long Form #03",driveId:"1SZbig0U1U07XumbC6H_jOProff0ht7Ea",thumb:"assets/LF [Thumbnails]/03.jpg"}
+    {title:"Long Form #01",driveId:"1VP1E0dTArBwiyP7S0YA7v85yW7Sb767n",youtube:"https://youtu.be/oWkbkVqzJXA?si=YMjQWt-ck-v_5bhK",thumb:"assets/LF [Thumbnails]/01.jpg"},
+    {title:"Long Form #02",driveId:"1N_GTjkY6gOEfk_g0flKhtdUQ03EU6Z4D",youtube:"https://youtu.be/yKVrPG0KDGw?si=vWOzN3MtOu44zH30",thumb:"assets/LF [Thumbnails]/02.jpg"},
+    {title:"Long Form #03",driveId:"1SZbig0U1U07XumbC6H_jOProff0ht7Ea",youtube:"https://youtu.be/pBv2bnPbAkQ?si=GHyYgizzUpU7wdk6",thumb:"assets/LF [Thumbnails]/03.jpg"}
   ];
   const shorts = [
     {id:"thgm6CuEBVw",title:"Short #01",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
@@ -42,8 +42,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function driveCard(item,index,kind){
     const n=String(index+1).padStart(2,"0"),src=item.driveId?drivePreview(item.driveId):"",tag=kind==="motion"?"MOTION GRAPHICS":"LONG FORM";
     const poster=item.thumb||"";
-    return `<article class="project drive-project" data-video="drive" data-src="${src}">
-      <div class="project-media drive-media">${poster?`<img src="${poster}" alt="${item.title}" loading="lazy">`:src?`<iframe src="${src}" title="${item.title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`:`<div class="drive-placeholder"><span>DRIVE VIDEO PENDING</span></div>`}<span class="num">${n}</span><span class="play">▶</span><span class="tag">${tag}</span><span class="hover-hint">HOVER</span></div>
+    const longActions=kind==="long"&&item.youtube?`<div class="lf-actions"><a class="lf-btn lf-youtube" href="${item.youtube}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"><span>▶</span> WATCH ON YOUTUBE</a><button class="lf-btn lf-drive" type="button" onclick="event.stopPropagation(); this.closest('.project').dispatchEvent(new CustomEvent('open-drive',{bubbles:true}))"><span>◆</span> WATCH IN DRIVE</button></div>`:"";
+    return `<article class="project drive-project ${kind==="long"?"long-form-project":""}" data-video="drive" data-src="${src}" data-youtube="${item.youtube||""}">
+      <div class="project-media drive-media">${poster?`<img src="${poster}" alt="${item.title}" loading="lazy">`:src?`<iframe src="${src}" title="${item.title}" loading="lazy" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`:`<div class="drive-placeholder"><span>DRIVE VIDEO PENDING</span></div>`}<span class="num">${n}</span><span class="play">▶</span>${longActions}<span class="tag">${tag}</span><span class="hover-hint">HOVER</span></div>
       <div class="project-meta"><h3>${item.title}</h3><p>${src?"GOOGLE DRIVE → PREVIEW":"ADD DRIVE FILE ID"}</p></div>
     </article>`;
   }
@@ -179,10 +180,20 @@ document.addEventListener("DOMContentLoaded", () => {
         openImage(el.dataset.src);
         return;
       }
-      if(el.dataset.video==="drive"&&el.dataset.src){openVideo(el.dataset.src);return;}
+      if(el.dataset.video==="drive"){
+        if(el.dataset.youtube){
+          window.open(el.dataset.youtube,"_blank","noopener,noreferrer");
+          return;
+        }
+        if(el.dataset.src){openVideo(el.dataset.src);return;}
+      }
       if(el.dataset.video==="youtube"){
         openVideo(`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`);
       }
+    });
+    el.addEventListener("open-drive",()=>{
+      hideHover();
+      if(el.dataset.src)openVideo(el.dataset.src);
     });
   });
 
