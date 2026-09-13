@@ -10,6 +10,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800;900&family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <style>
+    .long-form-project .lf-actions{position:absolute;left:50%;bottom:15px;z-index:6;transform:translateX(-50%);display:flex;align-items:center;justify-content:center;gap:8px;width:max-content;max-width:calc(100% - 24px)}
+    .long-form-project .lf-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:9px 12px;border:1px solid rgba(255,255,255,.72);border-radius:4px;background:rgba(8,9,9,.84);backdrop-filter:blur(5px);color:#fff;font:500 8px var(--mono);letter-spacing:.11em;white-space:nowrap;cursor:pointer;transition:.22s ease}
+    .long-form-project .lf-btn span{font-size:11px;line-height:1}
+    .long-form-project .lf-youtube{border-color:rgba(255,61,24,.85)}
+    .long-form-project .lf-youtube:hover{background:var(--red);border-color:var(--red);color:#080909;transform:translateY(-2px)}
+    .long-form-project .lf-drive:hover{background:#fff;border-color:#fff;color:#080909;transform:translateY(-2px)}
+    .long-form-project .play{top:44%}
+    .long-form-project .tag{bottom:9px;left:11px}
+    .long-form-project .hover-hint{display:none}
+    @media(max-width:700px){.long-form-project .lf-actions{bottom:10px;gap:5px;max-width:calc(100% - 12px)}.long-form-project .lf-btn{padding:7px 8px;font-size:6.5px;letter-spacing:.07em}.long-form-project .lf-btn span{font-size:9px}}
+  </style>
 </head>
 <body>
   <div class="noise"></div>
@@ -39,6 +51,6 @@
   </main>
   <footer><span>© 2026 ABHISHEK PANT. ALL RIGHTS RESERVED.</span><div><a href="mailto:abhishekpant440@gmail.com">EMAIL</a><a href="tel:+918630642207">PHONE</a></div></footer>
   <div class="player" id="player" aria-hidden="true"><button class="player-close" id="playerClose" aria-label="Close">×</button><div class="player-frame"><img id="playerImage" alt="Portfolio design preview"><iframe id="playerFrame" title="Portfolio video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div></div>
-  <script src="script.js?v=20260913-2"></script>
+  <script src="script.js?v=20260913-3"></script>
 </body>
 </html>
