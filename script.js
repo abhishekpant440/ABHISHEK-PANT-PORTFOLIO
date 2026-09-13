@@ -18,7 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
     {title:"Motion Graphics #08",driveId:"1Tdsn60SE_9CwifZUt1ToJqiu5LLqQAhD",thumb:"assets/MG [thumbnails]/08.png"}
   ];
   const longForm = [
-    {title:"Long Form #01",driveId:"1VP1E0dTArBwiyP7S0YA7v85yW7Sb767n"},{title:"Long Form #02",driveId:""},{title:"Long Form #03",driveId:""}
+    {title:"Long Form #01",driveId:"1VP1E0dTArBwiyP7S0YA7v85yW7Sb767n"},
+    {title:"Long Form #02",driveId:"1N_GTjkY6gOEfk_g0flKhtdUQ03EU6Z4D"},
+    {title:"Long Form #03",driveId:"1SZbig0U1U07XumbC6H_jOProff0ht7Ea"}
   ];
   const shorts = [
     {id:"thgm6CuEBVw",title:"Short #01",type:"REELS / SHORTS · SOCIAL",start:0,label:"00:00"},
