@@ -21,7 +21,16 @@
     .long-form-project .tag{bottom:9px;left:11px}
     .long-form-project .hover-hint{display:none}
     .ads-grid{grid-template-columns:repeat(2,minmax(260px,1fr));max-width:100%;gap:14px}
-    @media(max-width:700px){.long-form-project .lf-actions{bottom:10px;gap:5px;max-width:calc(100% - 12px)}.long-form-project .lf-btn{padding:7px 8px;font-size:6.5px;letter-spacing:.07em}.long-form-project .lf-btn span{font-size:9px}.ads-grid{grid-template-columns:1fr}}
+    .experience-list{display:grid;gap:28px;margin-top:48px;max-width:900px}
+    .experience-item{position:relative;border-left:1px solid rgba(255,255,255,.2);padding:0 0 0 24px}
+    .experience-item:before{content:"";position:absolute;left:-5px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 16px rgba(255,61,24,.35)}
+    .experience-top{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:8px}
+    .experience-role{font-size:18px;font-weight:700;margin:0}
+    .experience-date{font:9px var(--mono);letter-spacing:.12em;color:#777;white-space:nowrap}
+    .experience-company{font:10px var(--mono);letter-spacing:.16em;color:var(--red);margin:0 0 12px}
+    .experience-item ul{margin:0;padding-left:17px;color:#aaa;font-size:13px;line-height:1.7}
+    .experience-item li{margin-bottom:4px}
+    @media(max-width:700px){.long-form-project .lf-actions{bottom:10px;gap:5px;max-width:calc(100% - 12px)}.long-form-project .lf-btn{padding:7px 8px;font-size:6.5px;letter-spacing:.07em}.long-form-project .lf-btn span{font-size:9px}.ads-grid{grid-template-columns:1fr}.experience-list{margin-top:35px;gap:24px}.experience-top{display:block}.experience-date{display:block;margin-top:5px}.experience-role{font-size:16px}}
   </style>
 </head>
 <body>
@@ -60,7 +69,35 @@
       <div class="section-heading short-heading"><div><p class="eyebrow">SELECTED SOCIAL WORK</p><h2>REELS <span>/ SHORTS</span></h2></div><span class="section-link">05 VIDEOS <b>→</b></span></div>
       <div class="projects-grid shorts-grid" id="shortGrid"></div>
     </section>
-    <section class="about" id="about"><div class="about-label">ABOUT / 01</div><div><p class="eyebrow">THE EDIT</p><h2>Good stories<br>deserve <span>great editing.</span></h2><p class="about-copy">I work across documentaries, YouTube, social-first content and branded films — shaping raw footage into clear, watchable stories with rhythm, emotion and purpose.</p><div class="skills"><span>EDITING</span><span>MOTION DESIGN</span><span>GRAPHIC DESIGN</span><span>STORYTELLING</span><span>COLOR</span><span>SOUND</span><span>SHORT FORM</span></div></div></section>
+    <section class="about" id="about">
+      <div class="about-label">ABOUT / 01</div>
+      <div>
+        <p class="eyebrow">THE EDIT</p>
+        <h2>Good stories<br>deserve <span>great editing.</span></h2>
+        <p class="about-copy">I’m a Video Editor &amp; Graphic Designer with 2+ years of experience creating long-form documentaries, short-form content, product videos, motion graphics and visual storytelling. I work across different formats to shape raw footage into clear, engaging and polished content.</p>
+        <div class="experience-list">
+          <article class="experience-item">
+            <div class="experience-top"><h3 class="experience-role">Freelance Video Editor</h3><span class="experience-date">MARCH 2025 — SEPTEMBER 2025</span></div>
+            <p class="experience-company">BINGELABS</p>
+            <ul>
+              <li>Edited video content for <strong>Amazon Home India</strong> campaigns and digital content.</li>
+              <li>Created <strong>product showcase videos</strong> for home, furniture and lifestyle products.</li>
+              <li>Edited <strong>house tour content</strong>, shaping raw footage into polished and engaging visual narratives.</li>
+            </ul>
+          </article>
+          <article class="experience-item">
+            <div class="experience-top"><h3 class="experience-role">Video Editor</h3><span class="experience-date">SEPTEMBER 2025 — PRESENT</span></div>
+            <p class="experience-company">KEERTHI HISTORY</p>
+            <ul>
+              <li>Edited <strong>on-ground documentaries</strong>, transforming raw field footage into engaging documentary narratives.</li>
+              <li>Edited <strong>infotainment reels</strong> focused on concise storytelling, engaging pacing and social-first content.</li>
+              <li>Edited <strong>talking-head documentaries</strong>, enhancing content through pacing, cuts, visual storytelling and supporting edits.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="skills"><span>EDITING</span><span>MOTION DESIGN</span><span>GRAPHIC DESIGN</span><span>STORYTELLING</span><span>COLOR</span><span>SOUND</span><span>SHORT FORM</span></div>
+      </div>
+    </section>
     <section class="contact" id="contact"><div class="contact-left"><p class="eyebrow">HAVE A PROJECT?</p><h2>LET'S MAKE<br><span>SOMETHING.</span></h2></div><div class="contact-right"><a class="big-email" href="mailto:abhishekpant440@gmail.com">abhishekpant440@gmail.com ↗</a><a href="tel:+918630642207">+91 8630642207</a><p>Based in India · Available worldwide</p></div></section>
   </main>
   <footer><span>© 2026 ABHISHEK PANT. ALL RIGHTS RESERVED.</span><div><a href="mailto:abhishekpant440@gmail.com">EMAIL</a><a href="tel:+918630642207">PHONE</a></div></footer>
