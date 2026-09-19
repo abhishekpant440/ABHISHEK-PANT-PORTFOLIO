@@ -15,7 +15,8 @@ document.addEventListener("DOMContentLoaded", () => {
     {title:"Motion Graphics #05",driveId:"1AuCNQ0T3Zp2bF9uH4yDnje-1Cokp5cxE",thumb:"assets/MG [thumbnails]/05.png"},
     {title:"Motion Graphics #06",driveId:"1iZtaCqpCns7XcTu0iBUg5FDl33Doxmb0",thumb:"assets/MG [thumbnails]/06.png"},
     {title:"Motion Graphics #07",driveId:"11DmIRdJqN_dhF7pUUx3dnu7wEvZ6EL6e",thumb:"assets/MG [thumbnails]/07.png"},
-    {title:"Motion Graphics #08",driveId:"1Tdsn60SE_9CwifZUt1ToJqiu5LLqQAhD",thumb:"assets/MG [thumbnails]/08.png"}
+    {title:"Motion Graphics #08",driveId:"1Tdsn60SE_9CwifZUt1ToJqiu5LLqQAhD",thumb:"assets/MG [thumbnails]/08.png"},
+    {title:"Motion Graphics #09",driveId:"1omt_C5PnL1kWBhtOZMVeXmrpgZY4Vyl4",thumb:"assets/MG [thumbnails]/09.png"}
   ];
   const longForm = [
     {title:"Long Form #01",driveId:"1VP1E0dTArBwiyP7S0YA7v85yW7Sb767n",youtube:"https://youtu.be/oWkbkVqzJXA?si=YMjQWt-ck-v_5bhK",thumb:"assets/LF [Thumbnails]/01.jpg"},
