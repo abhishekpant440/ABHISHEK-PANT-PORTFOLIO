@@ -123,47 +123,47 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.style.overflow="hidden";
   }
 
-  const hoverPreview=document.createElement("div");
-  hoverPreview.className="hover-preview";
-  hoverPreview.innerHTML='<div class="hover-preview-media"></div><div class="hover-preview-label">LIVE PREVIEW · MOVE AWAY TO CLOSE</div>';
-  document.body.appendChild(hoverPreview);
-  const hoverMedia=hoverPreview.querySelector(".hover-preview-media");
   let activeHover=null;
 
-  function hideHover(){
+  function stopInCardVideo(el){
+    const media=el?.querySelector(".project-media");
+    if(!media)return;
+    const hoverFrame=media.querySelector(".in-card-hover-video");
+    if(hoverFrame)hoverFrame.remove();
+    el.classList.remove("is-playing");
     activeHover=null;
-    hoverPreview.classList.remove("show","poster-preview");
-    hoverMedia.innerHTML="";
   }
 
   function showHover(el){
+    if(!el || el.dataset.video==="graphic")return;
     if(activeHover===el)return;
-    hideHover();
+    if(activeHover)stopInCardVideo(activeHover);
+
+    const media=el.querySelector(".project-media");
+    if(!media)return;
     activeHover=el;
-    const isPoster=el.dataset.video==="graphic" && el.dataset.kind==="poster";
-    if(el.dataset.video==="graphic"){
-      const img=document.createElement("img");
-      img.src=el.dataset.src;
-      img.alt="Design preview";
-      hoverMedia.appendChild(img);
-    }else if(el.dataset.video==="youtube"){
-      const f=document.createElement("iframe");
-      f.src=`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&mute=1&controls=0&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`;
-      f.allow="autoplay; fullscreen; picture-in-picture";
-      f.allowFullscreen=true;
-      hoverMedia.appendChild(f);
-    }else if(el.dataset.video==="drive"&&el.dataset.src){
-      const f=document.createElement("iframe");
-      f.src=el.dataset.src+"?autoplay=1";
-      f.allow="autoplay; fullscreen; picture-in-picture";
-      f.allowFullscreen=true;
-      hoverMedia.appendChild(f);
+
+    const frame=document.createElement("iframe");
+    frame.className="in-card-hover-video";
+    frame.setAttribute("allow","autoplay; fullscreen; picture-in-picture");
+    frame.setAttribute("allowfullscreen","");
+    frame.setAttribute("loading","eager");
+
+    if(el.dataset.video==="youtube"){
+      frame.src=`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&controls=1&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`;
+    }else if(el.dataset.video==="drive" && el.dataset.src){
+      frame.src=el.dataset.src + (el.dataset.src.includes("?") ? "&" : "?") + "autoplay=1";
     }else{
       activeHover=null;
       return;
     }
-    if(isPoster)hoverPreview.classList.add("poster-preview");
-    requestAnimationFrame(()=>hoverPreview.classList.add("show"));
+
+    media.appendChild(frame);
+    el.classList.add("is-playing");
+  }
+
+  function hideHover(){
+    if(activeHover)stopInCardVideo(activeHover);
   }
 
   const cursor=document.createElement("div");
