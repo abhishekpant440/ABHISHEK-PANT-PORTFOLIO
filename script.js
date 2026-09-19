@@ -129,7 +129,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const media=el?.querySelector(".project-media");
     if(!media)return;
     const hoverFrame=media.querySelector(".in-card-hover-video");
-    if(hoverFrame)hoverFrame.remove();
+    if(hoverFrame){
+      const original=hoverFrame.dataset.originalSrc;
+      if(original){
+        hoverFrame.src=original;
+        hoverFrame.removeAttribute("data-original-src");
+        hoverFrame.classList.remove("in-card-hover-video");
+      }else{
+        hoverFrame.remove();
+      }
+    }
     el.classList.remove("is-playing");
     activeHover=null;
   }
@@ -143,74 +152,36 @@ document.addEventListener("DOMContentLoaded", () => {
     if(!media)return;
     activeHover=el;
 
-    const frame=document.createElement("iframe");
+    let frame=null;
+    if(el.dataset.video==="drive"){
+      frame=media.querySelector("iframe");
+      if(frame){
+        frame.dataset.originalSrc=frame.src;
+      }
+    }
+
+    if(!frame){
+      frame=document.createElement("iframe");
+      frame.setAttribute("allow","autoplay; fullscreen; picture-in-picture");
+      frame.setAttribute("allowfullscreen","");
+      frame.setAttribute("loading","eager");
+      media.appendChild(frame);
+    }
+
     frame.className="in-card-hover-video";
-    frame.setAttribute("allow","autoplay; fullscreen; picture-in-picture");
-    frame.setAttribute("allowfullscreen","");
-    frame.setAttribute("loading","eager");
 
     if(el.dataset.video==="youtube"){
       frame.src=`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&controls=1&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`;
     }else if(el.dataset.video==="drive" && el.dataset.src){
       frame.src=el.dataset.src + (el.dataset.src.includes("?") ? "&" : "?") + "autoplay=1";
     }else{
+      if(frame.dataset.originalSrc)frame.src=frame.dataset.originalSrc;
+      else frame.remove();
       activeHover=null;
       return;
     }
 
-    media.appendChild(frame);
     el.classList.add("is-playing");
   }
 
-  function hideHover(){
-    if(activeHover)stopInCardVideo(activeHover);
-  }
 
-  const cursor=document.createElement("div");
-  cursor.className="custom-cursor";
-  document.body.appendChild(cursor);
-  window.addEventListener("mousemove",e=>{
-    cursor.style.left=e.clientX+"px";
-    cursor.style.top=e.clientY+"px";
-  });
-
-  document.querySelectorAll(".project").forEach(el=>{
-    el.addEventListener("mouseenter",()=>{showHover(el);cursor.classList.add("active");});
-    el.addEventListener("mouseleave",()=>{hideHover();cursor.classList.remove("active");});
-    el.addEventListener("click",()=>{
-      hideHover();
-      if(el.dataset.video==="graphic"){
-        openImage(el.dataset.src);
-        return;
-      }
-      if(el.dataset.video==="drive"){
-        if(el.dataset.youtube){
-          window.open(el.dataset.youtube,"_blank","noopener,noreferrer");
-          return;
-        }
-        if(el.dataset.src){openVideo(el.dataset.src);return;}
-      }
-      if(el.dataset.video==="youtube"){
-        openVideo(`https://www.youtube-nocookie.com/embed/${el.dataset.id}?autoplay=1&rel=0&modestbranding=1&playsinline=1&start=${el.dataset.start||0}`);
-      }
-    });
-    el.addEventListener("open-drive",()=>{
-      hideHover();
-      if(el.dataset.src)openVideo(el.dataset.src);
-    });
-  });
-
-  window.addEventListener("scroll",hideHover,{passive:true});
-  window.addEventListener("resize",()=>{
-    hideHover();
-    if(player?.classList.contains("image-mode")&&playerImage?.naturalWidth){
-      const maxW=window.innerWidth-80,maxH=window.innerHeight-80;
-      const scale=Math.min(maxW/playerImage.naturalWidth,maxH/playerImage.naturalHeight,1);
-      frame.style.width=Math.round(playerImage.naturalWidth*scale)+"px";
-      frame.style.height=Math.round(playerImage.naturalHeight*scale)+"px";
-    }
-  });
-  $("playerClose")?.addEventListener("click",closePlayer);
-  player?.addEventListener("click",e=>{if(e.target===player)closePlayer()});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"){hideHover();closePlayer()}});
-});
