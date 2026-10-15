@@ -144,7 +144,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showHover(el){
-    if(!el || el.dataset.video==="graphic")return;
+    if(!el || el.dataset.video==="graphic" || el.dataset.video==="podcast")return;
     if(activeHover===el)return;
     if(activeHover)stopInCardVideo(activeHover);
 
@@ -199,6 +199,10 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("mouseleave",()=>{hideHover();cursor.classList.remove("active");});
     el.addEventListener("click",()=>{
       hideHover();
+      if(el.dataset.video==="podcast"){
+        if(el.dataset.url)window.open(el.dataset.url,"_blank","noopener,noreferrer");
+        return;
+      }
       if(el.dataset.video==="graphic"){
         openImage(el.dataset.src);
         return;
