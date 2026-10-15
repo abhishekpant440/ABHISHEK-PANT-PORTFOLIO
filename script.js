@@ -200,7 +200,7 @@ document.addEventListener("DOMContentLoaded", () => {
     el.addEventListener("click",()=>{
       hideHover();
       if(el.dataset.video==="podcast"){
-        if(el.dataset.url)window.open(el.dataset.url,"_blank","noopener,noreferrer");
+        if(el.dataset.url)window.location.href=el.dataset.url;
         return;
       }
       if(el.dataset.video==="graphic"){
